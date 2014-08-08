@@ -8,6 +8,7 @@ create table user (
   email                     varchar(255) not null,
   password                  varchar(255) not null,
   created_at                varchar(255) not null,
+  updated_at                varchar(255) not null,
   constraint pk_user primary key (id))
 ;
 

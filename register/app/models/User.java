@@ -31,6 +31,8 @@ public class User extends Model {
 	public String password;
 	@Column(nullable = false)
 	public String created_at;
+	@Column(nullable = false)
+	public String updated_at;
 
 	public static Finder<String, User> find = new Finder<String, User>(
 			String.class, User.class);

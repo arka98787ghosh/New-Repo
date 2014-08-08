@@ -52,6 +52,7 @@ public class Application extends Controller {
 				   Date date = new Date();
 				   //System.out.println(dateFormat.format(date));
 				user.created_at = dateFormat.format(date);
+				user.updated_at = dateFormat.format(date);
 				User.create(user);
 				result.put("state", true);
 				result.put("status", "OK");
