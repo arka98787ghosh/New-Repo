@@ -23,7 +23,7 @@ public class PostRequest {
 	static int id;
 
 	@SuppressLint("NewApi")
-	public boolean postRequest() throws JSONException, ClientProtocolException,
+	public static JSONObject postRequest() throws JSONException, ClientProtocolException,
 			IOException {
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 				.permitAll().build();
@@ -45,6 +45,7 @@ public class PostRequest {
 		String responseText = null;
 		try {
 			responseText = EntityUtils.toString(httpresponse.getEntity());
+			Log.i("status line in post request "," "+httpresponse.getStatusLine());
 		} catch (ParseException e) {
 			e.printStackTrace();
 			Log.i("Parse Exception", e + "");
@@ -52,14 +53,14 @@ public class PostRequest {
 
 		Log.i("response text", "" + responseText);
 		JSONObject jsonResponse = new JSONObject(responseText);
-
+		/*
 		boolean state = jsonResponse.getBoolean("state");
 		if (id == 1)
 			LoginActivity.message = jsonResponse.getString("message");
 		else if (id == 2)
 			MainActivity.message = jsonResponse.getString("message");
-
+	*/
 		// Log.i("in postrequest "+state ,jsonResponse.getString("message"));
-		return state;
+		return jsonResponse;
 	}
 }

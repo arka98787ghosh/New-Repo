@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -113,6 +114,39 @@ public class MainActivity extends Activity {
 					PostRequest.password = password.getText().toString();
 					//figure out how to get ip programmatically
 					PostRequest.url =  getResources().getString(R.string.urlRegister);
+					
+					JSONObject jsonReceived = new JSONObject();
+					
+					try {
+						jsonReceived = PostRequest.postRequest();
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					try {
+						if(jsonReceived.getBoolean("state")){
+							Toast.makeText(mContext, "you have been succesfully registered", Toast.LENGTH_SHORT).show();
+							Intent launchactivity = new Intent(MainActivity.this,
+									LoginActivity.class);
+							startActivity(launchactivity);
+							finish();
+						}else{
+							Toast.makeText(mContext, jsonReceived.getString("message"),
+									Toast.LENGTH_SHORT).show();
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					/*
 					PostRequest.id = 2;
 					try {
 						if(probj.postRequest()){
@@ -134,9 +168,11 @@ public class MainActivity extends Activity {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					*/
 				}else{
 					Toast.makeText(mContext, "Check the entered passwords" , Toast.LENGTH_SHORT).show();
 				}
+				
 			}
 		});
 		

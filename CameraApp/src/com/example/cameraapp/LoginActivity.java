@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -50,6 +51,36 @@ public class LoginActivity extends Activity {
 				//PostRequest.password = password.getText().toString();
 				//figure out how to get ip programmatically
 				PostRequest.url = getResources().getString(R.string.urlLogin);
+				JSONObject jsonReceived = new JSONObject();
+				try {
+					jsonReceived = PostRequest.postRequest();
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				try {
+					if(jsonReceived.getBoolean("state")){
+						Intent launchactivity = new Intent(LoginActivity.this,
+								TakePicture.class);
+						startActivity(launchactivity);
+						finish();
+					}else{
+						Toast.makeText(mContext, jsonReceived.getString("message"),
+								Toast.LENGTH_SHORT).show();
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				/*
 				PostRequest.id = 1;
 				Log.i("email"+emailId,"password"+password);
 				try {
@@ -72,6 +103,8 @@ public class LoginActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				*/
+				
 			}
 		});
 
