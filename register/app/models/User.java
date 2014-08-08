@@ -1,13 +1,19 @@
 package models;
 
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import controllers.Application;
 
@@ -19,10 +25,12 @@ public class User extends Model {
 	@Id
 	public Long id;
 	@Required
+	@Column(nullable = false)
 	public String email;
+	@Column(nullable = false)
 	public String password;
+	@Column(nullable = false)
 	public String created_at;
-	//public String updated_at;
 
 	public static Finder<String, User> find = new Finder<String, User>(
 			String.class, User.class);

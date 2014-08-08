@@ -4,11 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import play.*;
 import play.mvc.*;
-import play.mvc.Http.RequestBody;
-
-import views.html.*;
 import play.libs.Json;
 
 import models.User;
@@ -69,7 +65,7 @@ public class Application extends Controller {
 					result.put("message", "This email id is already registered");
 				else if (whatError == 2)
 					result.put("message", "Invalid email id format");
-				return ok(result);
+				return badRequest(result);
 			}
 
 		}
@@ -110,7 +106,7 @@ public class Application extends Controller {
 					result.put("message", "Invalid email id format");
 				else if (whatError == 3)
 					result.put("message", "This email id is not registered");
-				return ok(result);
+				return badRequest(result);
 			}
 
 		}
