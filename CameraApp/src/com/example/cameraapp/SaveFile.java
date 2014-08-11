@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Environment;
@@ -18,24 +19,14 @@ public class SaveFile extends Activity{
 	static File mediaStorageDir;
 	File pictureFile;
 	
-	//public Bitmap croppedBitmapSave;
-	
-	MaskActivity ma = new MaskActivity();
-	
 	public void save(){
-		 
-		 //croppedBitmapSave = ma.croppedBitmap;
 		 
 		 byte[] data;
 		 data = MaskActivity.bitData;
 		 
-		 //Log.i(" 1st savefile"," "+data[0]);
-		 //Log.i(" 2nd savefile"," "+data[1]);
-		 
 		 pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
          if (pictureFile == null){
-            // Log.d("Error in PictureCallback", "Error creating media file, check storage permissions: " +
-                // e.getMessage());
+            
              return;
          }
 
@@ -43,6 +34,8 @@ public class SaveFile extends Activity{
              FileOutputStream fos = new FileOutputStream(pictureFile);
              fos.write(data);
              fos.close();
+             UploadImage.file = pictureFile;
+             //UploadImage.fileName = 
          } catch (FileNotFoundException e) {
              Log.d("In PictureCalback", "File not found: " + e.getMessage());
          } catch (IOException e) {
@@ -52,12 +45,14 @@ public class SaveFile extends Activity{
 	
 	
 	/** Create a file Uri for saving an image or video */
-    private static Uri getOutputMediaFileUri(int type){
+    @SuppressWarnings("unused")
+	private static Uri getOutputMediaFileUri(int type){
           return Uri.fromFile(getOutputMediaFile(type));
     }
 
     /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type){
+    @SuppressLint("SimpleDateFormat")
+	private static File getOutputMediaFile(int type){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 

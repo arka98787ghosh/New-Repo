@@ -21,6 +21,7 @@ public class PostRequest {
 	static String password;
 	static String url;
 	static int id;
+	
 
 	@SuppressLint("NewApi")
 	public static JSONObject postRequest() throws JSONException, ClientProtocolException,
@@ -53,14 +54,7 @@ public class PostRequest {
 
 		Log.i("response text", "" + responseText);
 		JSONObject jsonResponse = new JSONObject(responseText);
-		/*
-		boolean state = jsonResponse.getBoolean("state");
-		if (id == 1)
-			LoginActivity.message = jsonResponse.getString("message");
-		else if (id == 2)
-			MainActivity.message = jsonResponse.getString("message");
-	*/
-		// Log.i("in postrequest "+state ,jsonResponse.getString("message"));
+		
 		return jsonResponse;
 	}
 }

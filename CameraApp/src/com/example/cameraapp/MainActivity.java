@@ -1,9 +1,6 @@
 package com.example.cameraapp;
 
 import java.io.IOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;

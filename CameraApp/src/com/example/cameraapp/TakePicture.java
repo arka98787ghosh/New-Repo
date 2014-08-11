@@ -52,7 +52,7 @@ public class TakePicture extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Crashlytics.start(this);
+		//Crashlytics.start(this);
 		setContentView(R.layout.takepicture);
 		mContext = this;
 		galleryButton = (Button) findViewById(R.id.gallery_button);

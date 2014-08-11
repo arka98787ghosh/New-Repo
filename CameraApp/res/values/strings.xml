@@ -16,4 +16,5 @@
     <string name="goToLoginPage">Go to Login Page</string>
     <string name="urlLogin">http://192.168.1.36:9000/login</string>
     <string name="urlRegister">http://192.168.1.36:9000/register</string>
+    <string name="urlSaveFile">http://192.168.1.36:9000/upload</string>
 </resources>

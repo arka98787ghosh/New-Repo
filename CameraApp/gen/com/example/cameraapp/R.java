@@ -1287,6 +1287,7 @@ containing a value of this type.
         public static final int register=0x7f0a0019;
         public static final int urlLogin=0x7f0a001b;
         public static final int urlRegister=0x7f0a001c;
+        public static final int urlSaveFile=0x7f0a001d;
     }
     public static final class style {
         /** 

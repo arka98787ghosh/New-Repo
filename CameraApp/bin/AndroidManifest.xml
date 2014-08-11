@@ -30,6 +30,7 @@
         <activity android:name="TakePicture"></activity>
         <meta-data android:name="com.crashlytics.ApiKey" android:value="c01a20e99a32df477a6fcaec750d777e72b2d7cd"/>
         <activity android:name="LoginActivity"></activity>
+        <activity android:name="UploadImage"></activity>
     </application>
 	
     <uses-permission android:name="android.permission.CAMERA"/>
