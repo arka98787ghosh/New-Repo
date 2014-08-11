@@ -12,6 +12,12 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
+create table user_image_ids (
+  id                        bigint auto_increment not null,
+  image_id                  varchar(255) not null,
+  constraint pk_user_image_ids primary key (id))
+;
+
 
 
 
@@ -20,6 +26,8 @@ create table user (
 SET FOREIGN_KEY_CHECKS=0;
 
 drop table user;
+
+drop table user_image_ids;
 
 SET FOREIGN_KEY_CHECKS=1;
 
