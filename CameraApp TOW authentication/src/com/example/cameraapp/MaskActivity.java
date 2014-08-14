@@ -271,6 +271,8 @@ public class MaskActivity extends Activity {
 						.getString(R.string.urlSaveFile);
 
 				UploadImage uI = new UploadImage();
+				SaveFile sv = new SaveFile();
+				sv.save();
 				try {
 					if (uI.executeMultipartPost()) {
 						Toast.makeText(getBaseContext(),
@@ -281,11 +283,9 @@ public class MaskActivity extends Activity {
 						startActivity(launchactivity);
 						finish();
 					} else {
-						SaveFile sv = new SaveFile();
-						sv.save();
-
-						MediaStore.Images.Media.insertImage(getContentResolver(),
-								croppedBitmap, "", "");
+						
+						MediaStore.Images.Media.insertImage(
+								getContentResolver(), croppedBitmap, "", "");
 						Toast.makeText(getBaseContext(), "Image saved",
 								Toast.LENGTH_SHORT).show();
 					}
@@ -330,7 +330,7 @@ public class MaskActivity extends Activity {
 				ll.removeAllViews();
 				DrawingView ndv = new DrawingView(getBaseContext());
 				ll.addView(ndv);
-				
+
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -371,7 +371,7 @@ public class MaskActivity extends Activity {
 				ll.removeAllViews();
 				DrawingView ndv = new DrawingView(getBaseContext());
 				ll.addView(ndv);
-				
+
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -398,14 +398,14 @@ public class MaskActivity extends Activity {
 				// loadingPanel.setVisibility(View.VISIBLE);
 				mProgressDialog = ProgressDialog.show(mContext, "Processing",
 						"Please Wait ...", true);
-
-				Filter.id = 3;
 				count = 0;
+				Filter.id = 3;
+
 				// Filter.onDrawing();
 				ll.removeAllViews();
 				DrawingView ndv = new DrawingView(getBaseContext());
 				ll.addView(ndv);
-				
+
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -433,14 +433,14 @@ public class MaskActivity extends Activity {
 
 				mProgressDialog = ProgressDialog.show(mContext, "Processing",
 						"Please Wait ...", true);
-
-				Filter.id = 4;
 				count = 0;
+				Filter.id = 4;
+
 				// Filter.onDrawing();
 				ll.removeAllViews();
 				DrawingView ndv = new DrawingView(getBaseContext());
 				ll.addView(ndv);
-				
+
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -468,14 +468,14 @@ public class MaskActivity extends Activity {
 
 				mProgressDialog = ProgressDialog.show(mContext, "Processing",
 						"Please Wait ...", true);
-
-				Filter.id = 5;
 				count = 0;
+				Filter.id = 5;
+
 				// Filter.onDrawing();
 				ll.removeAllViews();
 				DrawingView ndv = new DrawingView(getBaseContext());
 				ll.addView(ndv);
-				
+
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -503,14 +503,14 @@ public class MaskActivity extends Activity {
 
 				mProgressDialog = ProgressDialog.show(mContext, "Processing",
 						"Please Wait ...", true);
-
-				Filter.id = 6;
 				count = 0;
+				Filter.id = 6;
+
 				// Filter.onDrawing();
 				ll.removeAllViews();
 				DrawingView ndv = new DrawingView(getBaseContext());
 				ll.addView(ndv);
-				
+
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -545,7 +545,7 @@ public class MaskActivity extends Activity {
 				ll.removeAllViews();
 				DrawingView ndv = new DrawingView(getBaseContext());
 				ll.addView(ndv);
-				
+
 				new Thread(new Runnable() {
 					@Override
 					public void run() {

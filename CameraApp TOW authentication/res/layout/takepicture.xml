@@ -19,29 +19,29 @@
         android:text="click"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
-    
-    <ImageView
+    <!-- <ImageView
         android:id="@+id/lens"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:src="@drawable/lens"
-        android:scaleType="fitXY" />
-      
-      <Button
+        android:scaleType="fitXY" /> -->
+     
+      <!--<Button
         android:id="@+id/gallery_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Open Gallery"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true" />  -->
       
-      <Button
+      
+      <!-- <Button
         android:id="@+id/logout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true" />
-
+        android:layout_alignParentLeft="true" /> -->
+      
 </RelativeLayout>

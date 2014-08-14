@@ -1115,7 +1115,6 @@ containing a value of this type.
         public static final int filter7=0x7f050051;
         public static final int filterList=0x7f05004a;
         public static final int firstName=0x7f05003c;
-        public static final int gallery_button=0x7f050057;
         public static final int goToLoginPage=0x7f050040;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
@@ -1124,18 +1123,19 @@ containing a value of this type.
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
         public static final int lastName=0x7f05003d;
-        public static final int lens=0x7f050056;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
         public static final int ll=0x7f050048;
         public static final int loadingPanel=0x7f050052;
         public static final int loginButton=0x7f050045;
-        public static final int logout_button=0x7f050058;
+        public static final int logout=0x7f050058;
         public static final int mask_activity=0x7f050047;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
+        public static final int open_phone_gallery=0x7f050056;
+        public static final int open_server_gallery=0x7f050057;
         public static final int password=0x7f050042;
         public static final int passwordStatus=0x7f050043;
         public static final int progress_circular=0x7f050018;
@@ -1223,6 +1223,9 @@ containing a value of this type.
         public static final int mask_activity=0x7f03001b;
         public static final int support_simple_spinner_dropdown_item=0x7f03001c;
         public static final int takepicture=0x7f03001d;
+    }
+    public static final class menu {
+        public static final int menu=0x7f0c0000;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 

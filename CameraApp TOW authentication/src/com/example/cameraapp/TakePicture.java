@@ -18,10 +18,14 @@ import android.os.Bundle;
 import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 public class TakePicture extends Activity {
 
@@ -41,9 +45,9 @@ public class TakePicture extends Activity {
 	float widthMaskConst = 0.93125f;
 	static Bitmap bitmapThumbnail;
 	private ProgressDialog mProgressDialog;
+	//private Button galleryButton;
+	//private Button logoutButton;
 	private Context mContext;
-	private Button galleryButton;
-	private Button logoutButton;
 	private static int RESULT_LOAD_IMAGE = 1;
 	static int count = 0;
 	static int counter = 0;
@@ -53,9 +57,8 @@ public class TakePicture extends Activity {
 		super.onCreate(savedInstanceState);
 		//Crashlytics.start(this);
 		setContentView(R.layout.takepicture);
-		mContext = this;
-		galleryButton = (Button) findViewById(R.id.gallery_button);
-		logoutButton = (Button) findViewById(R.id.logout_button);
+		//galleryButton = (Button) findViewById(R.id.gallery_button);
+		//logoutButton = (Button) findViewById(R.id.logout_button);
 		Display display = getWindowManager().getDefaultDisplay();
 		Point point = new Point();
 		point.x = display.getWidth();
@@ -66,7 +69,7 @@ public class TakePicture extends Activity {
 		wMask = (int) (width * widthMaskConst);
 		Drawable myMask = getResources().getDrawable(R.drawable.mask);
 		mMask = ((BitmapDrawable) myMask).getBitmap();
-		
+		mContext = this;
 		final StoreToken st = new StoreToken(mContext);
 
 		captureButton = (Button) findViewById(R.id.camera_button);
@@ -79,7 +82,7 @@ public class TakePicture extends Activity {
 		 * mPreview = new CameraPreview(mContext, mCamera); FrameLayout preview
 		 * = (FrameLayout) findViewById(R.id.camera_preview);
 		 * preview.addView(mPreview); mCamera.startPreview();
-		 */
+		
 		galleryButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -92,17 +95,7 @@ public class TakePicture extends Activity {
 				startActivityForResult(i, RESULT_LOAD_IMAGE);
 			}
 		});
-		
-		logoutButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				st.deleteToken();
-				finish();
-			}
-		});
-
+		 */
 		captureButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -132,7 +125,41 @@ public class TakePicture extends Activity {
 
 			}
 		});
+		
 	}
+	
+	@Override
+	  public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	  } 
+	
+	@Override
+	  public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    // action with ID action_refresh was selected
+	    case R.id.open_phone_gallery:
+	    	Intent i = new Intent(
+					Intent.ACTION_PICK,
+					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			startActivityForResult(i, RESULT_LOAD_IMAGE);
+	      break;
+	    // action with ID action_settings was selected
+	    case R.id.open_server_gallery:
+	      Toast.makeText(this, "should load gallery from server", Toast.LENGTH_SHORT)
+	          .show();
+	      break;
+	    case R.id.logout:
+	    	StoreToken st = new StoreToken(mContext);
+	    	st.deleteToken();
+	    	finish();
+	    default:
+	      break;
+	    }
+
+	    return true;
+	  }
 
 	PictureCallback mPicture = new PictureCallback() {
 
@@ -271,6 +298,10 @@ public class TakePicture extends Activity {
             }
         ((ViewGroup) view).removeAllViews();
         }
+    }
+    
+    public static void logoutAction(){
+    	
     }
 
 }
