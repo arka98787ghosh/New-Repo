@@ -269,11 +269,6 @@ public class MaskActivity extends Activity {
 				// UploadImage.fileName = IdGen.getId();
 				UploadImage.url = getResources()
 						.getString(R.string.urlSaveFile);
-				SaveFile sv = new SaveFile();
-				sv.save();
-
-				MediaStore.Images.Media.insertImage(getContentResolver(),
-						croppedBitmap, "", "");
 
 				UploadImage uI = new UploadImage();
 				try {
@@ -286,6 +281,11 @@ public class MaskActivity extends Activity {
 						startActivity(launchactivity);
 						finish();
 					} else {
+						SaveFile sv = new SaveFile();
+						sv.save();
+
+						MediaStore.Images.Media.insertImage(getContentResolver(),
+								croppedBitmap, "", "");
 						Toast.makeText(getBaseContext(), "Image saved",
 								Toast.LENGTH_SHORT).show();
 					}
