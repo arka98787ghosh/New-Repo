@@ -1,31 +1,35 @@
 package controllers;
 
-import java.io.BufferedOutputStream;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import static java.nio.file.StandardOpenOption.*;
+
+import javax.imageio.ImageIO;
 
 import play.mvc.*;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.libs.Json;
 
+import models.IdGen;
 import models.User;
+import models.UserImageIds;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 public class Application extends Controller {
 	public static int whatError = 0;
-
+	public static Long loggedInUserId;
+	public static String fullImagePath = "FullImages";
+	public static String thumbnailImagePath = "ThumbnailImages";
+	public static int thumbnailSize = 200;
+	public static String setToken;
+	
 	/*
 	 * @BodyParser.Of(BodyParser.Json.class) public static Result index() {
 	 * RequestBody body = request().body(); return ok("Got json: " +
@@ -107,7 +111,8 @@ public class Application extends Controller {
 			 */
 			if (User.loginValidate(user)) {
 				result.put("state", true);
-				result.put("message", "should login");
+				result.put("authToken", setToken);
+				// result.put("id", ""+user.id);
 				return ok(result);
 			} else {
 				// User.create(user);
@@ -125,20 +130,69 @@ public class Application extends Controller {
 		}
 	}
 	
-	
-	public static Result upload() {
+	@Security.Authenticated(Secured.class)
+	public static Result upload() throws IOException {
 		MultipartFormData body = request().body().asMultipartFormData();
+		String receivedHeader = request().getHeader("authToken");
 		FilePart picture = body.getFile("picture");
+		/*
+		if(User.checkToken(receivedHeader)){
+			
+		}else{
+			flash("error", "Unauthenticated User");
+			return ok("Error");
+		}
+		*/
 		if (picture != null) {
-			String fileName = picture.getFilename();
-			String contentType = picture.getContentType();
 			File file = picture.getFile();
+			BufferedImage fullImage = ImageIO.read(file);
+			BufferedImage thumbnailImage = new BufferedImage(thumbnailSize, thumbnailSize,
+					BufferedImage.TYPE_INT_RGB);
+
+			Graphics g = thumbnailImage.createGraphics();
+			g.drawImage(fullImage, 0, 0, thumbnailSize, thumbnailSize, null);
+			g.dispose();
+
+			IdGen generatedId = new IdGen();
+			String imageFileName = generatedId.getId();
+			File outputFile = new File("/home/arka/" + fullImagePath + "/"
+					+ imageFileName + ".png");
+			ImageIO.write(fullImage, "png", outputFile);
+
+			File thumbnailOutputFile = new File("/home/arka/"
+					+ thumbnailImagePath + "/" + imageFileName + ".png");
+			ImageIO.write(thumbnailImage, "png", thumbnailOutputFile);
+
+			UserImageIds uII = new UserImageIds();
+			uII.user_id = loggedInUserId;
+			uII.imageId = imageFileName;
+			uII.fullImagePath = "/home/arka/" + fullImagePath + "/"
+					+ imageFileName + ".png";
+			uII.thumbnailImagePath = "/home/arka/" + thumbnailImagePath + "/"
+					+ imageFileName + ".png";
+			
+			DateFormat dateFormat = new SimpleDateFormat(
+					"yyyy/MM/dd HH:mm:ss");
+			// get current date time with Date()
+			Date date = new Date();
+			// System.out.println(dateFormat.format(date));
+			uII.createdAt = dateFormat.format(date);
+			User.updateUpdatedAt(receivedHeader, dateFormat.format(date));
+			uII.create(uII);
+
 			return ok("File uploaded");
 		} else {
 			flash("error", "Missing file");
 			// return redirect(routes.Application.index());
-			return ok("Error");
+			return ok("Errorjhjh");
 		}
+	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result tokenAuthenticate(){
+		ObjectNode result = Json.newObject();
+		result.put("state", true);
+		return ok(result);
 	}
 
 }

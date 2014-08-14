@@ -9,12 +9,18 @@ create table user (
   password                  varchar(255) not null,
   created_at                varchar(255) not null,
   updated_at                varchar(255) not null,
+  auth_token                varchar(255),
+  token_created_at          bigint,
   constraint pk_user primary key (id))
 ;
 
 create table user_image_ids (
   id                        bigint auto_increment not null,
+  user_id                   bigint not null,
   image_id                  varchar(255) not null,
+  full_image_path           varchar(255) not null,
+  thumbnail_image_path      varchar(255) not null,
+  created_at                varchar(255) not null,
   constraint pk_user_image_ids primary key (id))
 ;
 
