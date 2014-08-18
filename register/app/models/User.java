@@ -1,13 +1,12 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import controllers.Application;
-
 import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
@@ -172,5 +171,9 @@ public class User extends Model {
 		else
 			return new Date().getTime();
 	}
-
+	
+	public static Long getIdFromToken(String token){
+		User foundUser = find.where().eq("auth_token", token).findUnique();
+		return foundUser.id;
+	}
 }

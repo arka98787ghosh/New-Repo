@@ -15,7 +15,7 @@ public class Secured extends Security.Authenticator {
 		Long timeDifference = new Date().getTime()
 				- User.getAccessInstant(receivedToken);
 		boolean expiryStatus = timeDifference > (Long.valueOf(Play
-				.application().configuration().getString("sessionTimeOut"))) * 60 * 1000;
+				.application().configuration().getString("sessionTimeOut"))) * 60 * 60 * 1000;
 		if (User.authenticateToken(receivedToken) && !expiryStatus) {
 			return receivedToken;
 		} else {

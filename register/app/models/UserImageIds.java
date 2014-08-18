@@ -1,6 +1,10 @@
 package models;
 
+import java.util.List;
+
 import play.db.ebean.Model;
+import play.db.ebean.Model.Finder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +12,7 @@ import javax.persistence.Id;
 @SuppressWarnings("serial")
 @Entity
 public class UserImageIds extends Model {
-	
+
 	@Id
 	public Long id;
 	@Column(nullable = false)
@@ -22,7 +26,16 @@ public class UserImageIds extends Model {
 	@Column(nullable = false)
 	public String createdAt;
 
+	public static Finder<String, UserImageIds> find = new Finder<String, UserImageIds>(
+			String.class, UserImageIds.class);
+
 	public void create(UserImageIds userImageId) {
 		userImageId.save();
+	}
+
+	public List<UserImageIds> getImageIdsFromUserId(Long id) {
+		List<UserImageIds> userImageIds = find.where().eq("user_id", id)
+				.findList();
+		return userImageIds;
 	}
 }
