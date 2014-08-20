@@ -1,0 +1,27 @@
+ <ImageView
+        android:id="@+id/lens"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:src="@drawable/lens"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/cancel_button_bck" />
+
+    <ImageView
+        android:id="@+id/camera_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:maxHeight="160dp"
+        android:layout_marginBottom="-14dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/cam_button" />
