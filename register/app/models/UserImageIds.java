@@ -1,13 +1,11 @@
 package models;
 
 import java.util.List;
-
-import play.db.ebean.Model;
-import play.db.ebean.Model.Finder;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
 @Entity
@@ -15,15 +13,15 @@ public class UserImageIds extends Model {
 
 	@Id
 	public Long id;
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	public Long user_id;
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	public String imageId;
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	public String fullImagePath;
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	public String thumbnailImagePath;
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	public String createdAt;
 
 	public static Finder<String, UserImageIds> find = new Finder<String, UserImageIds>(

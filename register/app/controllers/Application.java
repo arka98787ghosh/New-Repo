@@ -4,19 +4,17 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import javax.imageio.ImageIO;
-
 import play.mvc.*;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
-import play.core.Router;
 import play.libs.Json;
-import scala.reflect.io.VirtualFile;
 import models.IdGen;
 import models.User;
 import models.UserImageIds;
@@ -193,7 +191,7 @@ public class Application extends Controller {
 	}
 	
 	@Security.Authenticated(Secured.class)
-	public static Result getImageIds(){
+	public static Result getImageUrls() throws UnknownHostException, SocketException{
 		UserImageIds uII = new UserImageIds();
 		String receivedHeader = request().getHeader("authToken");
 		Long id = User.getIdFromToken(receivedHeader);
@@ -201,8 +199,42 @@ public class Application extends Controller {
 		ObjectNode listImageIds = Json.newObject(); 
 		int i = 0;
 		for(UserImageIds element : lUII){
-			listImageIds.put(""+ i++ , ""+element.imageId);
+			// check if you can get port programmatically
+			listImageIds.put(""+ i++ , ""+"http://"+IPTest.getIp()+":9000/assets/images/ThumbnailImages/"
+					+element.imageId+ ".png");
+			
 		}
 		return ok(listImageIds);
+	}
+	
+	@BodyParser.Of(BodyParser.Json.class)
+	@Security.Authenticated(Secured.class)
+	public static Result getFullImageUrl() throws UnknownHostException, SocketException{
+		/*
+		UserImageIds uII = new UserImageIds();
+		
+		Long id = User.getIdFromToken(receivedHeader);
+		List<UserImageIds> lUII = uII.getImageIdsFromUserId(id);
+		ObjectNode listImageIds = Json.newObject(); 
+		int i = 0;
+		for(UserImageIds element : lUII){
+			// check if you can get port programmatically
+			listImageIds.put(""+ i++ , ""+"http://192.168.1.36:9000/assets/images/ThumbnailImages/"
+					+element.imageId+ ".png");
+			
+		}
+		*/
+		JsonNode json = request().body().asJson();
+		String receivedUrl = json.findPath("imageUrl").getTextValue();
+		String imageId = modifyUrl(receivedUrl);
+		ObjectNode fullImageUrl = Json.newObject();
+		fullImageUrl.put("fullImageUrl", "http://"+IPTest.getIp()+":9000/assets/images/FullImages/"
+					+imageId);
+		return ok(fullImageUrl);
+	}
+	
+	public static String modifyUrl(String imageUrl){
+		int start = imageUrl.lastIndexOf("/");
+		return imageUrl.substring(start+1);
 	}
 }

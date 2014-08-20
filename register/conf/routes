@@ -8,7 +8,9 @@ POST	/register					controllers.Application.register()
 POST	/login						controllers.Application.login()
 POST	/upload						controllers.Application.upload()
 POST	/tokenAuthenticate			controllers.Application.tokenAuthenticate()
-GET		/getImageIds				controllers.Application.getImageIds()
+GET		/getImageUrls				controllers.Application.getImageUrls()
+POST		/getFullImageUrl			controllers.Application.getFullImageUrl()
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

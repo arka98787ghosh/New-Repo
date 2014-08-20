@@ -16,11 +16,11 @@ create table user (
 
 create table user_image_ids (
   id                        bigint auto_increment not null,
-  user_id                   bigint not null,
-  image_id                  varchar(255) not null,
-  full_image_path           varchar(255) not null,
-  thumbnail_image_path      varchar(255) not null,
-  created_at                varchar(255) not null,
+  user_id                   bigint,
+  image_id                  varchar(255),
+  full_image_path           varchar(255),
+  thumbnail_image_path      varchar(255),
+  created_at                varchar(255),
   constraint pk_user_image_ids primary key (id))
 ;
 
