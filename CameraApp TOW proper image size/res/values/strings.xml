@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CameraApp</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="firstName">First Name</string>
+    <string name="lastName">Last Name</string>
+    <string name="email">Email Id</string>
+    <string name="password">Password</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="firstTime">First Time User?</string>
+    <string name="alreadyRegistered">Already Registered?</string>
+    <string name="login">Login</string>
+    <string name="gotoRegPage">Go to registration page</string>
+    <string name="register">Register</string>
+    <string name="goToLoginPage">Go to Login Page</string>
+    <string name="wifiIp">192.168.1.36</string>
+    <string name="urlLogin">http://192.168.1.36:9000/login</string>
+    <string name="urlRegister">http://192.168.1.36:9000/register</string>
+    <string name="urlSaveFile">http://192.168.1.36:9000/upload</string>
+    <string name="urlGetImageUrls">http://192.168.1.36:9000/getImageUrls</string>
+    <string name="urlGetFullImageUrl">http://192.168.1.36:9000/getFullImageUrl</string>
+    <string name="urlTokenAuthenticate">http://192.168.1.36:9000/tokenAuthenticate</string>
+</resources>
