@@ -10,16 +10,27 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import javax.imageio.ImageIO;
-import play.mvc.*;
-import play.mvc.Http.MultipartFormData;
-import play.mvc.Http.MultipartFormData.FilePart;
-import play.libs.Json;
+import javax.lang.model.element.Element;
+
 import models.IdGen;
+import models.RegistrationIds;
 import models.User;
 import models.UserImageIds;
+
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
+
+import play.libs.F.Function;
+import play.libs.Json;
+import play.libs.WS;
+import play.mvc.BodyParser;
+import play.mvc.Controller;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
+import play.mvc.Result;
+import play.mvc.Security;
 
 public class Application extends Controller {
 	public static int whatError = 0;
@@ -28,6 +39,7 @@ public class Application extends Controller {
 	public static String thumbnailImagePath = "register/public/images/ThumbnailImages";
 	public static int thumbnailSize = 100;
 	public static String setToken;
+	static String registration_id;
 
 	/*
 	 * @BodyParser.Of(BodyParser.Json.class) public static Result index() {
@@ -47,6 +59,7 @@ public class Application extends Controller {
 
 		String email = json.findPath("email").getTextValue();
 		String password = json.findPath("password").getTextValue();
+		registration_id = json.findPath("registrationId").getTextValue();
 		if (email == null) {
 			result.put("status", "KO");
 			result.put("message", "Missing parameter [name]");
@@ -73,6 +86,7 @@ public class Application extends Controller {
 				result.put("status", "OK");
 				result.put("message", "Hello " + email + " your password is "
 						+ password);
+				sendRegistrationNotification();
 				return ok(result);
 
 			} else {
@@ -95,15 +109,31 @@ public class Application extends Controller {
 
 		String email = json.findPath("email").getTextValue();
 		String password = json.findPath("password").getTextValue();
+		String deviceRegistrationId = json.findPath("registrationId").getTextValue();
+		RegistrationIds registrationId = new RegistrationIds();
+		
 		if (email == null) {
 			result.put("status", "KO");
 			result.put("message", "Missing parameter [name]");
 			return badRequest(result);
 		} else {
+			
+			DateFormat dateFormat = new SimpleDateFormat(
+					"yyyy/MM/dd HH:mm:ss");
+			// get current date time with Date()
+			Date date = new Date();
+			
 			User user = new User();
 			user.email = email;
 			MD5Password.passwordToHash = password;
 			user.password = MD5Password.hashPassword();
+			
+			///*
+			registrationId.device_token = deviceRegistrationId;
+			registrationId.email = email;
+			registrationId.created_at = dateFormat.format(date);
+			registrationId.updated_at = dateFormat.format(date);
+			//*/
 			/*
 			 * result.put("resultSetVal", User.loginValidate(user)); return
 			 * ok(result);
@@ -111,6 +141,8 @@ public class Application extends Controller {
 			if (User.loginValidate(user)) {
 				result.put("state", true);
 				result.put("authToken", setToken);
+				if(!RegistrationIds.emailAndDeviceToken(email, deviceRegistrationId))
+					registrationId.create(registrationId);
 				// result.put("id", ""+user.id);
 				return ok(result);
 			} else {
@@ -158,7 +190,7 @@ public class Application extends Controller {
 			File thumbnailOutputFile = new File("/home/arka/"
 					+ thumbnailImagePath + "/" + imageFileName + ".png");
 			ImageIO.write(thumbnailImage, "png", thumbnailOutputFile);
-
+			
 			UserImageIds uII = new UserImageIds();
 			uII.user_id = loggedInUserId;
 			uII.imageId = imageFileName;
@@ -174,7 +206,8 @@ public class Application extends Controller {
 			uII.createdAt = dateFormat.format(date);
 			User.updateUpdatedAt(receivedHeader, dateFormat.format(date));
 			uII.create(uII);
-
+			//sendRegistrationNotification();
+			sendUploadNotification(loggedInUserId);
 			return ok("File uploaded");
 		} else {
 			flash("error", "Missing file");
@@ -236,5 +269,52 @@ public class Application extends Controller {
 	public static String modifyUrl(String imageUrl){
 		int start = imageUrl.lastIndexOf("/");
 		return imageUrl.substring(start+1);
+	}
+	
+	public static Result sendRegistrationNotification(){
+		return async(WS
+				.url("https://android.googleapis.com/gcm/send")
+				.setHeader("Authorization",
+						"key=AIzaSyCR5pveDNWNdApiEBsumJJzsJRti9eNyQM")
+				.setHeader("Content-Type",
+						"application/x-www-form-urlencoded;charset=UTF-8")
+				.post("collapse_key=score_update&time_to_live=108&delay_while_idle=1&data=you have been succesfully registered&registration_id="+registration_id)
+				.map(new Function<WS.Response, Result>() {
+					public Result apply(WS.Response response) {
+						// JsonNode jsonReceived = response.asJson().get(1);
+						// response.asJson();
+						//return ok("Response status : " + response.getStatus() + " " + response.getBody());
+						return null;
+					}
+				}));
+	}
+	
+	public static Result sendUploadNotification(Long id){
+		
+		
+		String registration_ids = null;
+		String email = User.getEmailIdFromUserId(id);
+		List<RegistrationIds> registrationIds = RegistrationIds.getRegistrationIdsFromEmail(email);
+		
+		for(RegistrationIds e : registrationIds){
+			registration_ids += "\""+e.device_token+"\",";
+		}
+		
+		registration_ids = registration_ids.substring(0, registration_ids.length()-1);
+		
+		return async(WS
+				.url("https://android.googleapis.com/gcm/send")
+				.setHeader("Authorization",
+						"key=AIzaSyCR5pveDNWNdApiEBsumJJzsJRti9eNyQM")
+				.setHeader("Content-Type", "application/json")
+				.post("{\"registration_ids\" : ["+registration_ids+"]}")
+				.map(new Function<WS.Response, Result>() {
+					public Result apply(WS.Response response) {
+						// JsonNode jsonReceived = response.asJson().get(1);
+						// response.asJson();
+						//return ok("Response status : " + response.getStatus() + " " + response.getBody());
+						return null;
+					}
+				}));
 	}
 }

@@ -3,6 +3,15 @@
 
 # --- !Ups
 
+create table registration_ids (
+  id                        bigint auto_increment not null,
+  device_token              varchar(255),
+  email                     varchar(255),
+  created_at                varchar(255),
+  updated_at                varchar(255),
+  constraint pk_registration_ids primary key (id))
+;
+
 create table user (
   id                        bigint auto_increment not null,
   email                     varchar(255) not null,
@@ -16,7 +25,7 @@ create table user (
 
 create table user_image_ids (
   id                        bigint auto_increment not null,
-  user_id                   bigint,
+  user_id                   bigint not null,
   image_id                  varchar(255),
   full_image_path           varchar(255),
   thumbnail_image_path      varchar(255),
@@ -30,6 +39,8 @@ create table user_image_ids (
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
+
+drop table registration_ids;
 
 drop table user;
 

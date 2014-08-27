@@ -13,7 +13,7 @@ public class UserImageIds extends Model {
 
 	@Id
 	public Long id;
-	//@Column(nullable = false)
+	@Column(nullable = false)
 	public Long user_id;
 	//@Column(nullable = false)
 	public String imageId;

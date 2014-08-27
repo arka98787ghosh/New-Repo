@@ -175,4 +175,9 @@ public class User extends Model {
 		User foundUser = find.where().eq("auth_token", token).findUnique();
 		return foundUser.id;
 	}
+	
+	public static String getEmailIdFromUserId(Long id){
+		User foundUser = find.where().eq("id", id).findUnique();
+		return foundUser.email;
+	}
 }
